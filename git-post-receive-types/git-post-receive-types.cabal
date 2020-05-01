@@ -1,0 +1,28 @@
+name:           git-post-receive-types
+version:        0.1.0.0
+description:    Git post receive hook types
+homepage:       https://github.com/sorki/git-post-receive#readme
+bug-reports:    https://github.com/sorki/git-post-receive/issues
+author:         Richard Marko
+maintainer:     srk@48.io
+copyright:      2019 Richard Marko
+license:        BSD3
+build-type:     Simple
+cabal-version:  >= 1.10
+
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/sorki/git-post-receive
+
+library
+  exposed-modules:
+      Git.PostReceive.Types
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , bytestring
+  default-language: Haskell2010
