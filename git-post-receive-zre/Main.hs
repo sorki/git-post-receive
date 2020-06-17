@@ -4,7 +4,7 @@ module Main where
 import Git.PostReceive
 import Network.ZRE
 
-group = "commits"
+group = mkGroup "commits"
 
 main = do
   out <- postReceiveHookEncode
