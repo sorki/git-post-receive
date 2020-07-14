@@ -5,6 +5,8 @@ hsuper: hself: {
     hself.callCabal2nix "git-post-receive-hook"    ./git-post-receive-hook    {};
   git-post-receive-cat =
     hself.callCabal2nix "git-post-receive-cat"     ./git-post-receive-cat     {};
+  git-post-receive-cereal =
+    hself.callCabal2nix "git-post-receive-cereal"  ./git-post-receive-cereal  {};
   git-post-receive-exec =
     hself.callCabal2nix "git-post-receive-exec"    ./git-post-receive-exec    {};
   git-post-receive-zre =
