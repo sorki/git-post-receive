@@ -5,7 +5,6 @@ let
     "git-post-receive-hook"
     "git-post-receive-cat"
     "git-post-receive-exec"
-    "git-post-receive-push"
     "git-post-receive-zre"
     "git-post-receive-zre2irc"
   ];

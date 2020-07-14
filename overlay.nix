@@ -7,8 +7,6 @@ hsuper: hself: {
     hself.callCabal2nix "git-post-receive-cat"     ./git-post-receive-cat     {};
   git-post-receive-exec =
     hself.callCabal2nix "git-post-receive-exec"    ./git-post-receive-exec    {};
-  git-post-receive-push =
-    hself.callCabal2nix "git-post-receive-push"    ./git-post-receive-push    {};
   git-post-receive-zre =
     hself.callCabal2nix "git-post-receive-zre"     ./git-post-receive-zre     {};
   git-post-receive-zre2irc =
