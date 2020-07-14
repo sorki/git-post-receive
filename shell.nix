@@ -2,6 +2,7 @@
 let
   packages = [
     "git-post-receive-types"
+    "git-post-receive-aeson"
     "git-post-receive-hook"
     "git-post-receive-cat"
     "git-post-receive-cereal"

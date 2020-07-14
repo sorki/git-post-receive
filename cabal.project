@@ -1,5 +1,6 @@
 packages: ./git-post-receive-types/*.cabal
           ./git-post-receive-hook/*.cabal
+          ./git-post-receive-aeson/*.cabal
           ./git-post-receive-cat/*.cabal
           ./git-post-receive-cereal/*.cabal
           ./git-post-receive-exec/*.cabal

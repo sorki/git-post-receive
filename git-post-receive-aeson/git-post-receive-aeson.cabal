@@ -1,0 +1,25 @@
+name:                git-post-receive-aeson
+version:             0.1.0.0
+synopsis:            git-post-receive-types instances for aeson
+description:         JSON instances for core types used by git-post-receive-types
+homepage:            https://github.com/sorki/git-post-receive
+license:             BSD3
+author:              Richard Marko
+maintainer:          srk@48.io
+copyright:           2020 Richard Marko
+category:            Networking
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Git.PostReceive.Aeson
+  build-depends:       base >= 4.7 && < 5
+                     , aeson
+                     , text
+                     , git-post-receive-types
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/sorki/git-post-receive

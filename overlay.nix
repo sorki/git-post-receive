@@ -1,6 +1,8 @@
 hsuper: hself: {
   git-post-receive-types =
     hself.callCabal2nix "git-post-receive-types"   ./git-post-receive-types   {};
+  git-post-receive-aeson =
+    hself.callCabal2nix "git-post-receive-aeson"    ./git-post-receive-aeson    {};
   git-post-receive-hook =
     hself.callCabal2nix "git-post-receive-hook"    ./git-post-receive-hook    {};
   git-post-receive-cat =
