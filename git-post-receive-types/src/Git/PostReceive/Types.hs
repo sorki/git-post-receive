@@ -6,7 +6,6 @@
 
 module Git.PostReceive.Types where
 
-import Data.ByteString (ByteString)
 import Data.Time.Clock (UTCTime)
 import GHC.Generics
 
