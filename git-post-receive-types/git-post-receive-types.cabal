@@ -20,9 +20,13 @@ source-repository head
 library
   exposed-modules:
       Git.PostReceive.Types
+  ghc-options:
+      -Wall
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
     , bytestring
+    , hourglass
+    , time
   default-language: Haskell2010

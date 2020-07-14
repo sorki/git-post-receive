@@ -7,6 +7,7 @@
 module Git.PostReceive.Types where
 
 import Data.ByteString (ByteString)
+import Data.Time.Clock (UTCTime)
 import GHC.Generics
 
 data Change = Update | Create | Delete
@@ -14,13 +15,17 @@ data Change = Update | Create | Delete
 
 data Commit a =
   Commit
-    { commitRev        :: a
-    , commitBranch     :: a
-    , commitChangeType :: Change
-    , commitAuthorName :: a
-    , commitAuthorMail :: a
-    , commitMsg        :: a
-    , commitForced     :: Bool
+    { commitRev           :: a
+    , commitBranch        :: a
+    , commitChangeType    :: Change
+    , commitAuthorName    :: a
+    , commitAuthorMail    :: a
+    , commitAuthored      :: UTCTime
+    , commitCommitterName :: a
+    , commitCommitterMail :: a
+    , commitCommitted     :: UTCTime
+    , commitMsg           :: a
+    , commitForced        :: Bool
     }
   deriving (Eq, Show, Read, Generic, Functor, Foldable, Traversable)
 
