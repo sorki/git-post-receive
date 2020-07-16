@@ -7,6 +7,7 @@ let
     "git-post-receive-cat"
     "git-post-receive-cereal"
     "git-post-receive-exec"
+    "git-post-receive-pretty"
     "git-post-receive-zre"
     "git-post-receive-zre2irc"
   ];
