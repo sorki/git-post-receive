@@ -30,7 +30,10 @@ library
     , cereal
     , text
     , git
+    , time
+    , hourglass
     , foldl
     , turtle
     , git-post-receive-types
+    , git-post-receive-cereal
   default-language: Haskell2010
