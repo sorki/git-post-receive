@@ -24,8 +24,12 @@ executable git-post-receive-zre2irc
       base >=4.7 && <5
     , bytestring
     , text
+    , time
     , irc-colors
+    , ircbridge-types
+    , ircbridge-cereal
+    , optparse-applicative
     , zre
     , git-post-receive-types
-    , git-post-receive-hook
+    , git-post-receive-zre
   default-language: Haskell2010
