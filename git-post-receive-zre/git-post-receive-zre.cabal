@@ -17,19 +17,26 @@ source-repository head
   type: git
   location: https://github.com/sorki/git-post-receive
 
-executable git-post-receive-zre
-  main-is: Main.hs
-  -- hs-source-dirs:
-  --   app
+library
+  exposed-modules:
+      Git.PostReceive.ZRE
+  hs-source-dirs:
+     src
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , async
     , bytestring
-    , lifted-async
-    , stm
-    , transformers
+    , optparse-applicative
     , zre
     , git-post-receive-types
+    , git-post-receive-cereal
     , git-post-receive-hook
+  default-language: Haskell2010
+
+executable git-post-receive-zre
+  main-is: Main.hs
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , git-post-receive-zre
   default-language: Haskell2010
