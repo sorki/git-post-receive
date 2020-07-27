@@ -26,6 +26,7 @@ executable git-post-receive-cat
     , optparse-applicative
     , text
     , git-post-receive-types
+    , git-post-receive-filter
     , git-post-receive-pretty
     , git-post-receive-zre
     , zre
