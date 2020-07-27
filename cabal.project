@@ -4,6 +4,7 @@ packages: ./git-post-receive-types/*.cabal
           ./git-post-receive-cat/*.cabal
           ./git-post-receive-cereal/*.cabal
           ./git-post-receive-exec/*.cabal
+          ./git-post-receive-filter/*.cabal
           ./git-post-receive-pretty/*.cabal
           ./git-post-receive-zre/*.cabal
           ./git-post-receive-zre2irc/*.cabal

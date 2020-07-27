@@ -11,8 +11,10 @@ hsuper: hself: {
     hself.callCabal2nix "git-post-receive-cereal"  ./git-post-receive-cereal  {};
   git-post-receive-exec =
     hself.callCabal2nix "git-post-receive-exec"    ./git-post-receive-exec    {};
+  git-post-receive-filter =
+    hself.callCabal2nix "git-post-receive-filter"  ./git-post-receive-filter    {};
   git-post-receive-pretty =
-    hself.callCabal2nix "git-post-receive-pretty"    ./git-post-receive-pretty    {};
+    hself.callCabal2nix "git-post-receive-pretty"  ./git-post-receive-pretty    {};
   git-post-receive-zre =
     hself.callCabal2nix "git-post-receive-zre"     ./git-post-receive-zre     {};
   git-post-receive-zre2irc =
