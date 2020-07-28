@@ -3,13 +3,8 @@
 
 module Git.PostReceive.Filter where
 
---import Control.Monad (forM_, when)
---import Control.Monad.IO.Class (liftIO)
 import Data.Text (Text)
 import qualified Data.Text
---import qualified Data.Text.Encoding
---import qualified Data.Text.IO
---import qualified Data.ByteString.Char8
 
 import Git.PostReceive.Types
 import Options.Applicative
