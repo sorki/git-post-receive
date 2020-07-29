@@ -22,14 +22,12 @@ executable git-post-receive-exec
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , async
-    , bytestring
     , text
-    , lifted-async
-    , stm
-    , transformers
-    , turtle
+    , optparse-applicative
+    , process
     , zre
     , git-post-receive-types
+    , git-post-receive-filter
     , git-post-receive-hook
+    , git-post-receive-zre
   default-language: Haskell2010
