@@ -18,17 +18,33 @@ data Filter = Filter {
   , includeRepos :: Maybe Text
   } deriving (Eq, Show)
 
-parseFilter = Filter
-   <$> optional ( strOption (long "exclude-refs" <> short 'e' <> value ("pull/[0-9]+/merge")) )
-   <*> optional ( strOption (long "include-refs" <> short 'i') )
-   <*> optional ( strOption (long "exclude-repos") )
-   <*> optional ( strOption (long "include-repos") )
+parseFilter :: Parser Filter
+parseFilter =
+      (Filter
+        <$> optional ( strOption (long "exclude-refs" <> short 'e' <> value ("pull/[0-9]+/merge")) )
+        <*> optional ( strOption (long "include-refs" <> short 'i') )
+        <*> optional ( strOption (long "exclude-repos") )
+        <*> optional ( strOption (long "include-repos") )
+      )
+  <|> (pure emptyFilter <$> switch (long "all"))
+  <|> (branchFilter <$> strOption (long "branch"))
 
-defaultFilter = Filter {
-    excludeRefs  = Just "pull/[0-9]+/merge"
+emptyFilter :: Filter
+emptyFilter = Filter {
+    excludeRefs  = Nothing
   , includeRefs  = Nothing
   , excludeRepos = Nothing
   , includeRepos = Nothing
+  }
+
+defaultFilter :: Filter
+defaultFilter = emptyFilter {
+    excludeRefs  = Just "pull/[0-9]+/merge"
+  }
+
+branchFilter :: Text -> Filter
+branchFilter branch = emptyFilter {
+    includeRefs  = Just $ "heads/" <> branch
   }
 
 filterBatch :: Filter -> Batch Text -> Maybe (Batch Text)
