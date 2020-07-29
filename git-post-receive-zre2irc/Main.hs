@@ -70,6 +70,8 @@ main = subscribeZreWith parseIRCOptions $ \cfg batch' -> do
              , fg brown commitBranch
              , "] "
              , if commitForced then "(force-pushed) " else ""
+             , fg cyan (T.take 11 commitRev)
+             , " "
              , fg purple commitAuthorName
              , ": "
              , fg lime $ T.takeWhile (/='\n') commitMsg
