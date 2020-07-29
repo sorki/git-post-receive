@@ -13,8 +13,9 @@ import qualified Data.Text.Encoding
 import qualified Data.Time.Clock
 
 import Git.PostReceive.Types
---import Git.PostReceive.Serialize
+import Git.PostReceive.Filter
 import Git.PostReceive.ZRE
+
 import Data.Text.IRC.Color
 import Options.Applicative
 import Network.ZRE
@@ -29,80 +30,63 @@ g = mkGroup "ircInput"
 data IRCOptions = IRCOptions {
     ircTo     :: IRCTarget
   , ircNotice :: Bool
+  , filtering :: Filter
   } deriving (Show)
 
 parseIRCOptions = IRCOptions
   <$> (IRCChannel <$> strOption (long "chan" <> short 'c'))
   <*> switch (long "notice")
+  <*> parseFilter
 
 main :: IO ()
-main = subscribeZreWith parseIRCOptions $ \cfg Batch{..} -> do
-  zjoin g
-  let msg body = do
-        now <- liftIO $ Data.Time.Clock.getCurrentTime
-        zshout g $ encodeIRCOutput $ IRCOutput
-          { outputTo = ircTo cfg
-          , outputBody = body
-          , outputTime = now
-          , outputIsNotice = ircNotice cfg
-          }
+main = subscribeZreWith parseIRCOptions $ \cfg batch' -> do
+  case filterBatch (filtering cfg) (fmap (Data.Text.Encoding.decodeUtf8) batch') of
+    Nothing -> return ()
+    Just Batch{..} -> do
+      -- bad as we join on every msg, shouldn't matter..
+      zjoin g
+      let msg body = do
+            now <- liftIO $ Data.Time.Clock.getCurrentTime
+            zshout g $ encodeIRCOutput $ IRCOutput
+              { outputTo = ircTo cfg
+              , outputBody = body
+              , outputTime = now
+              , outputIsNotice = ircNotice cfg
+              }
 
-  unless (L.null batchCommits) $ do
-    msg $ T.unwords [
-         bfg cyan batchRepoName
-       , bfg teal "received"
-       , bfg cyan (B.pack $ show $ length batchCommits)
-       , bfg teal "commits"
-       ]
-    forM_ batchCommits $ \Commit{..} -> do
-       msg $ T.concat [
-           "["
-         , bfg brown commitBranch
-         , "] "
-         , bfg purple commitAuthorName
-         , ": "
-         , bfg lime $ B.takeWhile (/='\n') commitMsg
-         ]
-
-  unless (L.null batchLightTags) $ do
-    forM_ batchLightTags $ \LightTag{..} -> do
-      msg $ T.unwords [
-          bfg cyan batchRepoName
-        , bfg teal "tagged"
-        , bfg cyan lightTagName
-        ]
-{--
-runZre $ do
-  zjoin commitsGroup
-  zjoin ircGroup
-  zrecvShoutsDecode commitsGroup postReceiveHookDecode $ \out -> case out of
-    Left err -> zfail "Unable to decode"
-    Right Batch{..} -> do
       unless (L.null batchCommits) $ do
-        zshout ircGroup $ B.unwords [
-            bfg cyan batchRepoName
-          , bfg teal "received"
-          , bfg cyan (B.pack $ show $ length batchCommits)
-          , bfg teal "commits"
-          ]
+        msg $ T.unwords [
+             fg cyan batchRepoName
+           , fg teal "received"
+           , fg cyan (T.pack $ show $ length batchCommits)
+           , fg teal "commits"
+           ]
+
         forM_ batchCommits $ \Commit{..} -> do
-          zshout ircGroup $ B.concat [
-              "["
-            , bfg brown commitBranch
-            , "] "
-            , bfg purple commitAuthorName
-            , ": "
-            , bfg lime $ B.takeWhile (/='\n') commitMsg
-            ]
+           msg $ T.concat [
+               "["
+             , fg brown commitBranch
+             , "] "
+             , if commitForced then "(force-pushed) " else ""
+             , fg purple commitAuthorName
+             , ": "
+             , fg lime $ T.takeWhile (/='\n') commitMsg
+             ]
 
       unless (L.null batchLightTags) $ do
         forM_ batchLightTags $ \LightTag{..} -> do
-          zshout ircGroup $ B.unwords [
-              bfg cyan batchRepoName
-            , bfg teal "tagged"
-            , bfg cyan lightTagName
+          msg $ T.unwords [
+              fg cyan batchRepoName
+            , fg teal "tagged"
+            , fg cyan lightTagName
             ]
---}
 
--- big fore-ground color
-bfg c = fg c . Data.Text.Encoding.decodeUtf8 -- T.pack . B.unpack
+      unless (L.null batchTags) $ do
+        forM_ batchTags $ \Tag{..} -> do
+          msg $ T.unwords [
+              fg cyan batchRepoName
+            , fg teal "tagged"
+            , fg cyan tagRev
+            , " by "
+            , fg purple tagAuthorName
+            ]

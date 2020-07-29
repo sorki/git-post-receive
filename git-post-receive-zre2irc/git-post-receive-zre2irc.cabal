@@ -31,5 +31,6 @@ executable git-post-receive-zre2irc
     , optparse-applicative
     , zre
     , git-post-receive-types
+    , git-post-receive-filter
     , git-post-receive-zre
   default-language: Haskell2010
