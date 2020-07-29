@@ -204,18 +204,18 @@ restorePwd act = do
   Turtle.cd old
   return ret
 
-runInRepo :: Batch ByteString -> Text -> IO (Text)
+runInRepo :: Batch Text -> Text -> IO (Text)
 runInRepo Batch{..} cmd = restorePwd $ do
-  Turtle.cd $ Turtle.fromText $ T.pack $ B.unpack $ batchRepo
+  Turtle.cd $ Turtle.fromText batchRepo
   (_retcode, out, errout) <- Turtle.shellStrictWithErr cmd empty
   return $ T.concat [out, errout]
 
-withRepoCheckout :: Batch ByteString -> IO a -> IO a
+withRepoCheckout :: Batch Text -> IO a -> IO a
 withRepoCheckout Batch{..} cmd = restorePwd $ do
   Turtle.with (Turtle.mktempdir "/tmp" "git") $ \dir -> do
     Turtle.stdout (Turtle.inshell
       ("git clone "
-      <> (T.pack . B.unpack $ batchRepo)
+      <> batchRepo
       <> " "
       <> (Turtle.format Turtle.fp dir)) empty)
 
