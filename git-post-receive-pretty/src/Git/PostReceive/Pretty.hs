@@ -36,12 +36,14 @@ renderCommitDull = renderStrict . unAnnotateS . layoutPretty defaultLayoutOption
 prettyTime :: UTCTime -> Doc ann
 prettyTime = brackets . pretty . iso8601Show
 
+prettyBatch :: Pretty a => Batch a -> Doc AnsiStyle
 prettyBatch Batch{..} = vcat $
   [ annotate (color Magenta) ("batch" <+> pretty batchRepoName <+> angles (pretty batchRepo)) ]
   ++ map prettyCommit batchCommits
   ++ map prettyTag batchTags
   ++ map prettyLightTag batchLightTags
 
+prettyCommit :: Pretty a => Commit a -> Doc AnsiStyle
 prettyCommit Commit{..} = vcat
   [ annotate (color Yellow) ("commit" <+> pretty commitRev) <+> pretty commitBranch
   , "Author:    " <+> pretty commitAuthorName <+> angles (pretty commitAuthorMail)
@@ -51,8 +53,10 @@ prettyCommit Commit{..} = vcat
   , indent 4 (pretty commitMsg)
   ]
 
+prettyLightTag :: Pretty a => LightTag a -> Doc ann
 prettyLightTag LightTag{..} =
   "light-tag" <+> pretty lightTagCommit <+> pretty lightTagName
 
+prettyTag :: Pretty a => Tag a -> Doc ann
 prettyTag Tag{..} =
   "tag" <+> pretty tagRev <+> pretty tagAuthorName <+> angles (pretty tagAuthorMail)

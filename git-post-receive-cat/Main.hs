@@ -2,19 +2,15 @@
 {-# LANGUAGE RecordWildCards   #-}
 module Main where
 
-import Control.Monad (forM_, when)
+import Control.Monad (forM_)
 import Control.Monad.IO.Class (liftIO)
-import Data.Text (Text)
-import qualified Data.Text
 import qualified Data.Text.Encoding
 import qualified Data.Text.IO
-import qualified Data.ByteString.Char8
 
 import Git.PostReceive.Types
 import Git.PostReceive.Filter
 import Git.PostReceive.ZRE
 import Git.PostReceive.Pretty
-import Network.ZRE
 
 import Options.Applicative
 
@@ -24,6 +20,7 @@ data CatOpts = CatOpts {
   , filtering   :: Filter
   } deriving (Show)
 
+parseCatOptions :: Parser CatOpts
 parseCatOptions = CatOpts
    <$> switch (long "commits" <> short 'c')
    <*> switch (long "dull")

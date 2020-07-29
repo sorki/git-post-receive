@@ -58,13 +58,16 @@ filterBatch Filter{..} batch =
   . maybe id (\x -> commitFilter (not . matchesTextRe x . commitBranch)) excludeRefs
   $ Just batch
 
+isEmptyBatch :: Batch a -> Bool
 isEmptyBatch Batch{..} = null batchCommits && null batchTags && null batchLightTags
 
+commitFilter :: (Commit a -> Bool) -> Maybe (Batch a) -> Maybe (Batch a)
 commitFilter f (Just batch) = Just $ batch { batchCommits = filter f (batchCommits batch) }
-commitFilter f batch | otherwise = Nothing
+commitFilter _ _ | otherwise = Nothing
 
+batchFilter :: (a -> Bool) -> Maybe a -> Maybe a
 batchFilter  f (Just batch) | f batch = Just batch
-batchFilter  f batch | otherwise = Nothing
+batchFilter  _ _ | otherwise = Nothing
 
 matchesRe :: String -> String -> Bool
 matchesRe x re = x =~ re

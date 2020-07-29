@@ -6,7 +6,6 @@ module Main where
 import Control.Monad
 import Control.Monad.IO.Class
 
-import qualified Data.ByteString.Char8 as B
 import qualified Data.List             as L
 import qualified Data.Text             as T
 import qualified Data.Text.Encoding
@@ -18,13 +17,15 @@ import Git.PostReceive.ZRE
 
 import Data.Text.IRC.Color
 import Options.Applicative
-import Network.ZRE
 
 import Network.IRC.Bridge.Types
 import Network.IRC.Bridge.Serialize
 --import Network.IRC.Bridge.ZRE
 
+import Network.ZRE
+
 -- XXX
+g :: Group
 g = mkGroup "ircInput"
 
 data IRCOptions = IRCOptions {
@@ -33,6 +34,7 @@ data IRCOptions = IRCOptions {
   , filtering :: Filter
   } deriving (Show)
 
+parseIRCOptions :: Parser IRCOptions
 parseIRCOptions = IRCOptions
   <$> (IRCChannel <$> strOption (long "chan" <> short 'c'))
   <*> switch (long "notice")

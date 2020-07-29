@@ -8,7 +8,7 @@ module Git.PostReceive.Serialize
 
 import Data.ByteString (ByteString)
 import Data.Serialize
-import Data.Time.Clock.Serialize
+import Data.Time.Clock.Serialize ()
 
 import Git.PostReceive.Types
 

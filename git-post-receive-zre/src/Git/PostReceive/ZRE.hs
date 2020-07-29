@@ -14,8 +14,10 @@ import Git.PostReceive.Serialize
 import Options.Applicative
 import Network.ZRE
 
+defaultCommitsGroup :: Group
 defaultCommitsGroup = mkGroup "commits"
 
+parseGroup :: Parser Group
 parseGroup = mkGroup
   <$> strArgument (metavar "GROUP" <> (value $ unGroup defaultCommitsGroup))
 
@@ -33,7 +35,7 @@ subscribeZreWith :: Parser t -> (t -> Batch ByteString -> ZRE ()) -> IO ()
 subscribeZreWith parser handler = runZreParse withGroupParser $ \(group, rest) -> do
   zjoin group
   zrecvShoutsDecode group postReceiveHookDecode $ \case
-    Left err -> zfail "Unable to decode"
+    Left _err -> zfail "Unable to decode"
     Right b -> handler rest b
   where
     withGroupParser = (,) <$> parseGroup <*> parser

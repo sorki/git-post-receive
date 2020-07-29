@@ -9,6 +9,7 @@ module Git.PostReceive (
   , postReceiveHookShow
   , runInRepo
   , withRepoCheckout
+  , walk
   )
   where
 
@@ -32,12 +33,10 @@ import Data.Git.Storage.Object
 import qualified Data.Git
 
 import Data.Hourglass (Elapsed(..), Seconds(..), timeGetElapsed)
-import Data.Serialize
 import Data.Typeable (Typeable)
 import qualified Turtle
 
 import Git.PostReceive.Types
-import Git.PostReceive.Serialize
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 
 data PostInfo a = PostInfo {
@@ -194,8 +193,9 @@ walk repo new old = go (textToRef new)
 textToRef :: HashAlgorithm hash => Text -> Ref hash
 textToRef = fromHex . B.pack . T.unpack
 
-refToText :: HashAlgorithm hash => Ref hash -> Text
-refToText = T.pack . B.unpack . toHex
+-- unused
+-- refToText :: HashAlgorithm hash => Ref hash -> Text
+-- refToText = T.pack . B.unpack . toHex
 
 restorePwd :: MonadIO m => m b -> m b
 restorePwd act = do

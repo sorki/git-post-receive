@@ -4,14 +4,12 @@ module Main where
 
 import Control.Monad
 import Control.Monad.IO.Class
-import Data.Text (Text)
 import qualified Data.Text
 import qualified Data.Text.Encoding
 
 import Git.PostReceive
 import Git.PostReceive.Filter
 import Git.PostReceive.ZRE
-import Network.ZRE
 import Options.Applicative
 
 import System.Exit
@@ -25,6 +23,7 @@ data ExecOpts = ExecOpts {
   , filtering          :: Filter
   } deriving (Show)
 
+parseExecOptions :: Parser ExecOpts
 parseExecOptions = ExecOpts
    <$> switch (long "include-force-pushes")
    <*> switch (long "per-commit")
@@ -35,7 +34,7 @@ main :: IO ()
 main = subscribeZreWith parseExecOptions $ \cfg batch' -> do
   case filterBatch (filtering cfg) (fmap (Data.Text.Encoding.decodeUtf8) batch') of
     Nothing -> return ()
-    Just b@Batch{..} -> do
+    Just Batch{..} -> do
 
       when (
         any commitForced batchCommits == False
