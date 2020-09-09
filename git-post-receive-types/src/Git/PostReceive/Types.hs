@@ -46,7 +46,8 @@ data Tag a =
 data Batch a =
   Batch
     {
-      batchRepo        :: a
+      batchProject     :: Maybe a
+    , batchRepo        :: a
     , batchRepoName    :: a
     , batchCommits     :: [Commit a]
     , batchTags        :: [Tag a]

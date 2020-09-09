@@ -27,7 +27,7 @@ import Control.Monad.IO.Class (MonadIO)
 
 import Data.Git hiding (Commit, Tag)
 import Data.Git.Ref (HashAlgorithm, fromHex, toHex)
-import Data.Git.Repository (getCommitMaybe)
+import Data.Git.Repository (configGet, getCommitMaybe)
 import Data.Git.Storage.Object
 
 import qualified Data.Git
@@ -156,9 +156,11 @@ postReceiveHook = do
 
       return (commits, lightTags, tags)
 
+  mProject <- withCurrentRepo $ \g -> configGet g "emci" "project"
   x <- Turtle.pwd
   return $ Batch {
-      batchRepo      = (B.pack $ T.unpack $ Turtle.format Turtle.fp x)
+      batchProject   = B.pack <$> mProject
+    , batchRepo      = (B.pack $ T.unpack $ Turtle.format Turtle.fp x)
     , batchRepoName  = (B.pack $ T.unpack $ Turtle.format Turtle.fp (Turtle.basename x))
     , batchCommits   = concat $ map (\(c, _, _) -> c) out
     , batchLightTags = concat $ map (\(_, l, _) -> l) out
