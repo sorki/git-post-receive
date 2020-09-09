@@ -13,6 +13,7 @@ import Git.PostReceive.ZRE
 import Options.Applicative
 
 import System.Exit
+import System.Environment
 import System.IO
 import System.Process
 
@@ -42,14 +43,16 @@ main = subscribeZreWith parseExecOptions $ \cfg batch' -> do
         ) $ do
 
             let runner commit = liftIO $ do
+                  mPath <- System.Environment.lookupEnv "PATH"
                   (_, Just hOut, Just hErr, p) <- createProcess $ (shell (execCommand cfg)) {
                           std_out = CreatePipe
                         , std_err = CreatePipe
-                        , env = Just [
+                        , cwd = Just $ Data.Text.unpack batchRepo
+                        , env = Just $ [
                               ("GIT_REPO", Data.Text.unpack batchRepo)
                             , ("GIT_BRANCH", Data.Text.unpack (commitBranch commit))
                             , ("GIT_REV", Data.Text.unpack (commitRev commit))
-                            ]
+                            ] ++ (maybe [] (\x -> [("PATH", x)]) mPath)
                         }
                   ec <- waitForProcess p
                   out <- hGetContents hOut
