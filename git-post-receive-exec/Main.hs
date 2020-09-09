@@ -61,11 +61,11 @@ main = subscribeZreWith parseExecOptions $ \cfg batch' -> do
                   case ec of
                     ExitSuccess -> do
                       putStrLn "Command done"
-                      putStrLn $ "Output was:\n" ++ out
                     ExitFailure c -> do
                       putStrLn $ "Command failed with exit code " ++ (show c)
-                      putStrLn $ "Output was:\n" ++ out
-                      putStrLn $ "Error was:\n" ++ err
+
+                  putStrLn $ "Output was:\n" ++ out
+                  putStrLn $ "Error was:\n" ++ err
 
             case perCommit cfg of
               True -> mapM_ runner batchCommits
